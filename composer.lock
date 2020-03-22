@@ -1,0 +1,211 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "75f02abc094b4d03c3fa20194c26b3a0",
+    "packages": [
+        {
+            "name": "bobby/array-special-helper",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/array-speical-helper.git",
+                "reference": "d2cb309e210399ee89aa53302f86c35dffaf9f2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/array-speical-helper/zipball/d2cb309e210399ee89aa53302f86c35dffaf9f2b",
+                "reference": "d2cb309e210399ee89aa53302f86c35dffaf9f2b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\ArraySpecialHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "995933447@qq.com"
+                }
+            ],
+            "description": "Some special algorithm help to use array",
+            "time": "2020-03-11T05:04:58+00:00"
+        },
+        {
+            "name": "bobby/multi-processes",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/php-multi-processes-component.git",
+                "reference": "3224aab7b0007e147f4c7465eb9892788cce7b42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/php-multi-processes-component/zipball/3224aab7b0007e147f4c7465eb9892788cce7b42",
+                "reference": "3224aab7b0007e147f4c7465eb9892788cce7b42",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-pcntl": "*",
+                "ext-posix": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\MultiProcesses\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "995933447@qq.com"
+                }
+            ],
+            "description": "php原生pcntl实现的简易多进程和进程池组件,支持父子进程双向通信传输数据.包含进程池按需动态fork进程功能.",
+            "time": "2020-03-09T03:00:35+00:00"
+        },
+        {
+            "name": "bobby/server-network-protocol",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/php-server-network-protocol.git",
+                "reference": "90ff2e21647d3ef7c46c5ced9c6ebafc225ca046"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/php-server-network-protocol/zipball/90ff2e21647d3ef7c46c5ced9c6ebafc225ca046",
+                "reference": "90ff2e21647d3ef7c46c5ced9c6ebafc225ca046",
+                "shasum": ""
+            },
+            "require": {
+                "bobby/array-special-helper": "master-dev",
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phpunit/php-invoker": "^2.0",
+                "phpunit/phpunit": "^8.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\ServerNetworkProtocol\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "995933447@qq.com"
+                }
+            ],
+            "description": "Server network protocol parsers",
+            "time": "2020-03-13T09:04:47+00:00"
+        },
+        {
+            "name": "bobby/servers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/php-servers.git",
+                "reference": "9f07eca3c16729d0fb686dc256232490b8a6743b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/php-servers/zipball/9f07eca3c16729d0fb686dc256232490b8a6743b",
+                "reference": "9f07eca3c16729d0fb686dc256232490b8a6743b",
+                "shasum": ""
+            },
+            "require": {
+                "bobby/server-network-protocol": "master-dev",
+                "bobby/stream-event-loop": "master-dev",
+                "ext-openssl": "*",
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "ext-sockets": "*",
+                "ext-zlib": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\Servers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "995933447@qq.com"
+                }
+            ],
+            "description": "原生PHP实现的异步即时网络通信服务组件",
+            "time": "2020-03-22T09:14:20+00:00"
+        },
+        {
+            "name": "bobby/stream-event-loop",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/php-stream-event-loop.git",
+                "reference": "db3ca8600d1c959014d3a257135c2f5a9fefd696"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/php-stream-event-loop/zipball/db3ca8600d1c959014d3a257135c2f5a9fefd696",
+                "reference": "db3ca8600d1c959014d3a257135c2f5a9fefd696",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcntl": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\StreamEventLoop\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "995933447@qq.com"
+                }
+            ],
+            "description": "stream函数开发的异步非阻塞IO事件循环组件",
+            "time": "2020-03-22T18:30:57+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "bobby/servers": 20,
+        "bobby/multi-processes": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

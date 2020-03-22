@@ -1,0 +1,22 @@
+{
+    "name": "bobby/servers-runner",
+    "description": "PHP server多进程管理方案",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bobby",
+            "email": "995933447@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+    	"bobby/servers": "dev-master",
+     	"bobby/multi-processes": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bobby\\ServersRunner\\": "src/"
+        }
+    }
+}
