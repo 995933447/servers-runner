@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/995933447/php-servers.git",
-                "reference": "9f07eca3c16729d0fb686dc256232490b8a6743b"
+                "reference": "067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/995933447/php-servers/zipball/9f07eca3c16729d0fb686dc256232490b8a6743b",
-                "reference": "9f07eca3c16729d0fb686dc256232490b8a6743b",
+                "url": "https://api.github.com/repos/995933447/php-servers/zipball/067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b",
+                "reference": "067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b",
                 "shasum": ""
             },
             "require": {
@@ -158,7 +158,7 @@
                 }
             ],
             "description": "原生PHP实现的异步即时网络通信服务组件",
-            "time": "2020-03-22T09:14:20+00:00"
+            "time": "2020-03-23T15:42:03+00:00"
         },
         {
             "name": "bobby/stream-event-loop",

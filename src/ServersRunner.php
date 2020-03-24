@@ -5,21 +5,19 @@ use Bobby\MultiProcesses\Process;
 use Bobby\MultiProcesses\Quit;
 use Bobby\Servers\Contracts\ServerContract;
 use Bobby\Servers\EventHandler;
-use InvalidArgumentException;
+use Bobby\ServersRunner\Utils\EventRegistrarTrait;
+use Bobby\ServersRunner\Utils\ResetStdTrait;
 
 class ServersRunner
 {
+    use EventRegistrarTrait;
+    use ResetStdTrait;
+
     const START_EVENT = 'start';
-
-    const WORKER_START_EVENT = 'worker_start';
-
-    const WORKER_ERROR_EVENT = 'worker_error';
-
-    const WORKER_STOP_EVENT = 'worker_stop';
 
     const STOP_EVENT = 'stop';
 
-    protected $allowListenEvents = [self::START_EVENT, self::WORKER_START_EVENT, self::WORKER_ERROR_EVENT, self::WORKER_STOP_EVENT, self::STOP_EVENT];
+    protected $allowListenEvents = [self::START_EVENT, self::STOP_EVENT];
 
     protected $eventLoop;
 
@@ -31,6 +29,8 @@ class ServersRunner
 
     protected $asyncListenSignals = false;
 
+    protected $isRunning = false;
+
     public function __construct(ServersRunnerConfig $config)
     {
         $this->config = $config;
@@ -39,20 +39,25 @@ class ServersRunner
 
     public function addServerWorker(ServerContract $server, ServerWorkerConfig $config)
     {
-        $this->serverWorkers[] = new ServerWorker($server, $config);
-    }
-
-    public function on(string $event, callable $callback)
-    {
-        if (in_array($event, $this->allowListenEvents)) {
-            $this->eventHandler->register($event, $callback);
-        } else {
-            throw new InvalidArgumentException("Event $event now allow set.");
+        if (!is_null($this->config->stdinFile) && is_null($config->stdinFile)) {
+            $config->setStdinFile($this->config->stdinFile);
         }
+
+        if (!is_null($this->config->stdoutFile) && is_null($config->stdoutFile)) {
+            $config->setStdoutFile($this->config->stdoutFile);
+        }
+
+        if (!is_null($this->config->stderrFile) && is_null($config->stderrFile)) {
+            $config->setStderrFile($this->config->stderrFile);
+        }
+
+        $this->serverWorkers[] = new ServerWorker($server, $config);
     }
 
     public function run()
     {
+        $this->isRunning = true;
+
         if ($this->config->daemonize) {
             (new Process(function () {
                 $this->work();
@@ -66,11 +71,71 @@ class ServersRunner
 
     protected function work()
     {
-        $this->readyWork();
-        $this->startWork();
+        $this->runServerWorkers();
+
+        $this->readyMonitorServerWorkers();
+
+        $this->savePidFile();
+
+        $this->resetStd();
+
+        $this->emitOnEvent(static::START_EVENT);
+
+        $this->monitorServerWorkers();
     }
 
-    protected function readyWork()
+    protected function resetStd()
+    {
+        if (!is_null($this->config->stdinFile)) {
+            $this->resetStdin($this->config->stdinFile);
+        }
+
+        if (!is_null($this->config->stdoutFile)) {
+            $this->resetStdout($this->config->stdoutFile);
+        }
+
+        if (!is_null($this->config->stderrFile)) {
+            $this->resetStderr($this->config->stderrFile);
+        }
+    }
+
+    protected function savePidFile()
+    {
+        if (trim($this->config->pidFile)) {
+            if (file_exists($this->config->pidFile)) {
+                if (!$fp = fopen($this->config->pidFile, 'r')) {
+                    throw new \RuntimeException("Pid file:{$this->config->pidFile} open failed.");
+                }
+
+                if (!flock($fp, LOCK_EX | LOCK_NB)) {
+                    throw new \RuntimeException("Pid file:{$this->config->pidFile} has been locked!");
+                }
+
+                $fp = fopen($this->config->pidFile, 'w+');
+
+                fwrite($fp, posix_getpid());
+            } else {
+                if (file_put_contents($this->config->pidFile, posix_getpid()) === false) {
+                    throw new \RuntimeException("Pid file:{$this->config->pidFile} save failed.");
+                }
+            }
+        }
+    }
+
+    protected function runServerWorkers()
+    {
+        foreach ($this->serverWorkers as $serverWorker) {
+            $serverWorker->run();
+        }
+    }
+
+    protected function stop()
+    {
+        $this->isRunning = false;
+        $this->emitOnEvent(static::STOP_EVENT);
+    }
+
+    protected function readyMonitorServerWorkers()
     {
         $forceExitSignals = [SIGINT, SIGTERM];
         foreach ($forceExitSignals as $signalNo) {
@@ -79,7 +144,7 @@ class ServersRunner
                     $serverWorker->exit();
                 }
 
-                Quit::normalQuit();
+                $this->stop();
             });
         }
 
@@ -90,7 +155,7 @@ class ServersRunner
                     $serverWorker->exit(true);
                 }
 
-                Quit::normalQuit();
+                $this->stop();
             });
         }
 
@@ -109,63 +174,16 @@ class ServersRunner
         foreach ($reloadSignals as $signalNo) {
             pcntl_signal($signalNo, function () {
                 foreach ($this->serverWorkers as $serverWorker) {
-                    $serverWorker->exit(true);
+                    foreach ($serverWorker->getProcesses() as $process) {
+                        posix_kill($process->getPid(), SIGQUIT);
+                    }
                 }
             });
         }
 
         if (function_exists('pcntl_async_signals')) {
-            if (!pcntl_async_signals()) {
-                $this->asyncListenSignals = pcntl_async_signals(true);
-            } else {
-                $this->asyncListenSignals = true;
-            }
-        }
-    }
-
-    protected function startWork()
-    {
-        $this->runServerWorkers();
-
-        $this->savePidFile();
-
-        $this->resetStd();
-
-        $this->monitorServerWorkers();
-    }
-
-    protected function resetStd()
-    {
-        if ($this->config->daemonize) {
-            fclose(STDIN);
-            fclose(STDOUT);
-            fclose(STDERR);
-        }
-    }
-
-    protected function savePidFile()
-    {
-        if (!empty($this->config->pidFile)) {
-            if (file_exists($this->config->pidFile)) {
-                if (!$fp = fopen($this->config->pidFile, 'r')) {
-                    throw new \RuntimeException("Pid file:{$this->config->pidFile} open failed.");
-                }
-
-                if (!flock($fp, LOCK_EX | LOCK_NB)) {
-                    throw new \RuntimeException("Pid file:{$this->config->pidFile} has been locked!");
-                }
-
-                $fp = fopen($this->config->pidFile, 'w+');
-
-                fwrite($fp, posix_getpid());
-            }
-        }
-    }
-
-    protected function runServerWorkers()
-    {
-        foreach ($this->serverWorkers as $serverWorker) {
-            $serverWorker->run();
+            pcntl_async_signals() || pcntl_async_signals(true);
+            $this->asyncListenSignals = true;
         }
     }
 
@@ -174,9 +192,14 @@ class ServersRunner
         while (1) {
             $this->dispatchSignals();
 
-            $pid = pcntl_wait($status);
+            // php7.2使用pcntl_wait($status)阻塞并不会被SIGKILL以外的被信号中断,这是个bug
+            $pid = pcntl_wait($status, WNOHANG);
 
             $this->dispatchSignals();
+
+            if (!$this->isRunning) {
+                break;
+            }
 
             if ($pid > 0) {
                 foreach ($this->serverWorkers as $serverWorker) {
@@ -186,6 +209,8 @@ class ServersRunner
                         break;
                     }
                 }
+            } else {
+                sleep(1);
             }
         }
     }

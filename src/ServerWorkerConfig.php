@@ -7,13 +7,19 @@ class ServerWorkerConfig
 {
     use MagicGetterTrait;
 
-    protected $workerNum;
+    protected $workerNum = 1;
 
     protected $name;
 
     protected $user;
 
     protected $group;
+
+    protected $stdoutFile;
+
+    protected $stderrFile;
+
+    protected $stdinFile;
 
     public function setWorkerNum(int $workerNum)
     {
@@ -36,5 +42,20 @@ class ServerWorkerConfig
     public function setGroup(string $group)
     {
         $this->group = $group;
+    }
+
+    public function setStdoutFile(string $stdoutFile)
+    {
+        $this->stdoutFile = $stdoutFile;
+    }
+
+    public function setStderrFile(string $stderrFile)
+    {
+        $this->stderrFile = $stderrFile;
+    }
+
+    public function setStdinFile(string $stdinFile)
+    {
+        $this->stdinFile = $stdinFile;
     }
 }

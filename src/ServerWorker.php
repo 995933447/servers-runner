@@ -4,16 +4,27 @@ namespace Bobby\ServersRunner;
 use Bobby\MultiProcesses\Process;
 use Bobby\MultiProcesses\Quit;
 use Bobby\Servers\Contracts\ServerContract;
-use Bobby\StreamEventLoop\LoopContract;
-use function Clue\StreamFilter\register;
+use Bobby\ServersRunner\Utils\EventRegistrarTrait;
+use Bobby\ServersRunner\Utils\ResetStdTrait;
 
 class ServerWorker
 {
+    use EventRegistrarTrait;
+    use ResetStdTrait;
+
+    const WORKER_START_EVENT = 'worker_start';
+
+    const WORKER_ERROR_EVENT = 'worker_error';
+
+    const WORKER_STOP_EVENT = 'worker_stop';
+
     protected $server;
 
     protected $config;
 
     protected $processes = [];
+
+    protected $allowListenEvents = [self::WORKER_START_EVENT, self::WORKER_STOP_EVENT];
 
     public function __construct(ServerContract $server, ServerWorkerConfig $config)
     {
@@ -83,10 +94,10 @@ class ServerWorker
 
             $this->startServer();
 
-            throw new \RuntimeException("Worker process name:{$process->getRealName()} pid:{$process->getPid()} event-loop exit.");
+            $this->emitOnEvent(static::WORKER_STOP_EVENT);
         });
 
-        if (!empty($this->config->name)) {
+        if (trim($this->config->name)) {
             $process->setName($this->config->name);
         }
 
@@ -100,20 +111,43 @@ class ServerWorker
         $this->server->getEventLoop()->installSignal(SIGQUIT, function () {
             $this->server->pause();
 
-            $graceQuit = function () {
+            $gracefulQuit = function () {
                 if ($this->server->getEventLoop()->isEmptyReadyWriteStream()) {
                     $this->server->getEventLoop()->stop();
+
+                    $this->emitOnEvent(static::WORKER_STOP_EVENT);
+
                     Quit::normalQuit();
                 }
             };
 
-            $graceQuit();
+            $gracefulQuit();
 
-            $this->server->getEventLoop()->addTick(2, $graceQuit);
+            $this->server->getEventLoop()->addTick(2, $gracefulQuit);
         });
 
         $this->server->listen();
+
+        $this->resetStd();
+
+        $this->emitOnEvent(static::WORKER_START_EVENT);
+
         $this->server->getEventLoop()->poll();
+    }
+
+    protected function resetStd()
+    {
+        if (!is_null($this->config->stdinFile)) {
+            $this->resetStdin($this->config->stdinFile);
+        }
+
+        if (!is_null($this->config->stdoutFile)) {
+            $this->resetStdout($this->config->stdoutFile);
+        }
+
+        if (!is_null($this->config->stderrFile)) {
+            $this->resetStderr($this->config->stderrFile);
+        }
     }
 
     protected function setWorkerProcessGid()
