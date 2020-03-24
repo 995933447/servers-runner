@@ -34,7 +34,6 @@ class ServersRunner
     public function __construct(ServersRunnerConfig $config)
     {
         $this->config = $config;
-        $this->eventHandler = new EventHandler();
     }
 
     public function addServerWorker(ServerContract $server, ServerWorkerConfig $config)
