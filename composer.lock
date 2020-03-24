@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "75f02abc094b4d03c3fa20194c26b3a0",
+    "content-hash": "80ebe12a100bf06d71bf276d879fc1be",
     "packages": [
         {
             "name": "bobby/array-special-helper",
@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/995933447/php-servers.git",
-                "reference": "067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b"
+                "reference": "22ec7c6ef258725825efeb6a1130a5a051ecfc55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/995933447/php-servers/zipball/067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b",
-                "reference": "067fe1c9cb2f5e57ce76cf62bd4673e8cebb7c1b",
+                "url": "https://api.github.com/repos/995933447/php-servers/zipball/22ec7c6ef258725825efeb6a1130a5a051ecfc55",
+                "reference": "22ec7c6ef258725825efeb6a1130a5a051ecfc55",
                 "shasum": ""
             },
             "require": {
@@ -158,7 +158,40 @@
                 }
             ],
             "description": "原生PHP实现的异步即时网络通信服务组件",
-            "time": "2020-03-23T15:42:03+00:00"
+            "time": "2020-03-23T16:30:55+00:00"
+        },
+        {
+            "name": "bobby/std",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/995933447/std.git",
+                "reference": "7804093e226cd4fbe3b19ccf30ec4168058dbf5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/995933447/std/zipball/7804093e226cd4fbe3b19ccf30ec4168058dbf5b",
+                "reference": "7804093e226cd4fbe3b19ccf30ec4168058dbf5b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bobby\\Std\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bobby",
+                    "email": "9959533447@qq.con"
+                }
+            ],
+            "description": "reset php stdin,stdout,stderr",
+            "time": "2020-03-24T14:52:55+00:00"
         },
         {
             "name": "bobby/stream-event-loop",
@@ -202,7 +235,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "bobby/servers": 20,
-        "bobby/multi-processes": 20
+        "bobby/multi-processes": 20,
+        "bobby/std": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

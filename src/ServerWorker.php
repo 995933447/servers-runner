@@ -5,12 +5,11 @@ use Bobby\MultiProcesses\Process;
 use Bobby\MultiProcesses\Quit;
 use Bobby\Servers\Contracts\ServerContract;
 use Bobby\ServersRunner\Utils\EventRegistrarTrait;
-use Bobby\ServersRunner\Utils\ResetStdTrait;
+use Bobby\Std\Std;
 
 class ServerWorker
 {
     use EventRegistrarTrait;
-    use ResetStdTrait;
 
     const WORKER_START_EVENT = 'worker_start';
 
@@ -136,15 +135,15 @@ class ServerWorker
     protected function resetStd()
     {
         if (!is_null($this->config->stdinFile)) {
-            $this->resetStdin($this->config->stdinFile);
+            Std::resetStdin($this->config->stdinFile);
         }
 
         if (!is_null($this->config->stdoutFile)) {
-            $this->resetStdout($this->config->stdoutFile);
+            Std::resetStdout($this->config->stdoutFile);
         }
 
         if (!is_null($this->config->stderrFile)) {
-            $this->resetStderr($this->config->stderrFile);
+            Std::resetStderr($this->config->stderrFile);
         }
     }
 

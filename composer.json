@@ -12,7 +12,8 @@
     "minimum-stability": "dev",
     "require": {
     	"bobby/servers": "dev-master",
-     	"bobby/multi-processes": "dev-master"
+     	"bobby/multi-processes": "dev-master",
+        "bobby/std": "dev-master"
     },
     "autoload": {
         "psr-4": {
