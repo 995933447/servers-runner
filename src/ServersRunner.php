@@ -4,7 +4,6 @@ namespace Bobby\ServersRunner;
 use Bobby\MultiProcesses\Process;
 use Bobby\MultiProcesses\Quit;
 use Bobby\Servers\Contracts\ServerContract;
-use Bobby\Servers\EventHandler;
 use Bobby\ServersRunner\Utils\EventRegistrarTrait;
 use Bobby\ServersRunner\Utils\ResetStdTrait;
 
