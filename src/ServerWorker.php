@@ -14,8 +14,6 @@ class ServerWorker
 
     const WORKER_START_EVENT = 'worker_start';
 
-    const WORKER_ERROR_EVENT = 'worker_error';
-
     const WORKER_STOP_EVENT = 'worker_stop';
 
     protected $server;

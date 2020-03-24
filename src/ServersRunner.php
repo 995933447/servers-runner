@@ -188,9 +188,7 @@ class ServersRunner
     protected function monitorServerWorkers()
     {
         while (1) {
-            $this->dispatchSignals();
-
-            // php7.2使用pcntl_wait($status)阻塞并不会被SIGKILL以外的被信号中断,这是个bug
+            // php7.2以上使用pcntl_wait($status)阻塞并不会被SIGKILL以外的被信号中断,这是个bug
             $pid = pcntl_wait($status, WNOHANG);
 
             $this->dispatchSignals();

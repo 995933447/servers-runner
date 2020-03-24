@@ -10,20 +10,20 @@
 
 function resetStdout(string $stdoutFile)
 {
-//    if (!$fp = fopen($stdoutFile, 'a')) {
-//        throw new \RuntimeException("Open reset stdout file:$stdoutFile failed.");
-//    }
-
     if (is_resource(STDOUT) && get_resource_type(STDOUT) === 'stream') {
         fclose(STDOUT);
     }
 
     global $STDOUT;
 
+    $STDOUT = null;
+
     if (!$STDOUT = fopen($stdoutFile, 'a')) {
         throw new RuntimeException("Open reset stdout file:$stdoutFile failed.");
     }
 }
 
-resetStdout('/var/www/std.log');
+resetStdout('/var/www/std2.log');
 echo "hello\n";
+resetStdout('/var/www/std2.log');
+echo "world\n";

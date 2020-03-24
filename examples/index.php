@@ -3,10 +3,10 @@ require __DIR__ . "/../vendor/autoload.php";
 
 $serversRunnerConfig = new \Bobby\ServersRunner\ServersRunnerConfig();
 $serversRunnerConfig->setPidFile('/var/www/servers-runner.pid');
-$serversRunnerConfig->setDaemonize(true);
-//$serversRunnerConfig->setStdinFile('/var/www/stdin.log');
-//$serversRunnerConfig->setStdoutFile('/var/www/stdout.log');
-//$serversRunnerConfig->setStderrFile('/var/www/stderr.log');
+//$serversRunnerConfig->setDaemonize(true);
+$serversRunnerConfig->setStdinFile('/var/www/stdin.log');
+$serversRunnerConfig->setStdoutFile('/var/www/stdout.log');
+$serversRunnerConfig->setStderrFile('/var/www/stderr.log');
 $serversRunner = new \Bobby\ServersRunner\ServersRunner($serversRunnerConfig);
 
 $eventLoop = \Bobby\StreamEventLoop\LoopFactory::make();
@@ -23,7 +23,7 @@ $httpServer->on(\Bobby\Servers\Http\Server::REQUEST_EVENT, function (
 });
 
 $httpServerWorkerConfig = new \Bobby\ServersRunner\ServerWorkerConfig();
-$httpServerWorkerConfig->setWorkerNum(2);
+$httpServerWorkerConfig->setWorkerNum(10);
 $httpServerWorkerConfig->setName('Http server');
 $httpServerWorkerConfig->setGroup('root');
 $httpServerWorkerConfig->setUser('bp');
@@ -62,7 +62,7 @@ $tcpServer->on(\Bobby\Servers\Tcp\Server::ERROR_EVENT, function (
 });
 
 $tcpServerWorkerConfig = new \Bobby\ServersRunner\ServerWorkerConfig();
-$tcpServerWorkerConfig->setWorkerNum(2);
+$tcpServerWorkerConfig->setWorkerNum(5);
 $tcpServerWorkerConfig->setName('Tcp server');
 $tcpServerWorkerConfig->setGroup('root');
 $tcpServerWorkerConfig->setUser('bp');
