@@ -34,7 +34,7 @@ class ServersRunner
         $this->config = $config;
     }
 
-    public function addServerWorker(ServerContract $server, ServerWorkerConfig $config)
+    public function addServerWorker(ServerContract $server, ServerWorkerConfig $config): ServerWorker
     {
         if (!is_null($this->config->stdinFile) && is_null($config->stdinFile)) {
             $config->setStdinFile($this->config->stdinFile);
@@ -48,7 +48,9 @@ class ServersRunner
             $config->setStderrFile($this->config->stderrFile);
         }
 
-        $this->serverWorkers[] = new ServerWorker($server, $config);
+        $this->serverWorkers[] = $serverWorker = new ServerWorker($server, $config);
+
+        return $serverWorker;
     }
 
     public function run()

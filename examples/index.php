@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . "/../vendor/autoload.php";
 
+// 配置master进程
 $serversRunnerConfig = new \Bobby\ServersRunner\ServersRunnerConfig();
 $serversRunnerConfig->setPidFile('/var/www/servers-runner.pid');
 //$serversRunnerConfig->setDaemonize(true);
@@ -11,6 +12,7 @@ $serversRunner = new \Bobby\ServersRunner\ServersRunner($serversRunnerConfig);
 
 $eventLoop = \Bobby\StreamEventLoop\LoopFactory::make();
 
+// 配置http 服务worker进程
 $httpServeSocket = new \Bobby\Servers\Socket("0.0.0.0:9501");
 $httpServerConfig = new \Bobby\Servers\ServerConfig();
 $httpServer = new \Bobby\Servers\Http\Server($httpServeSocket, $httpServerConfig, $eventLoop);
@@ -28,8 +30,17 @@ $httpServerWorkerConfig->setName('Http server');
 $httpServerWorkerConfig->setGroup('root');
 $httpServerWorkerConfig->setUser('bp');
 
-$serversRunner->addServerWorker($httpServer, $httpServerWorkerConfig);
+$httpServerWorker = $serversRunner->addServerWorker($httpServer, $httpServerWorkerConfig);
 
+$httpServerWorker->on(\Bobby\ServersRunner\ServerWorker::WORKER_START_EVENT, function () {
+    echo "Http server worker start\n";
+});
+
+$httpServerWorker->on(\Bobby\ServersRunner\ServerWorker::WORKER_STOP_EVENT, function () {
+    echo "Http server worker stop.\n";
+});
+
+// 配置tcp服务worker进程
 $tcpServeSocket = new \Bobby\Servers\Socket('0.0.0.0:9502');
 $tcpServerConfig = new \Bobby\Servers\ServerConfig();
 $tcpServer = new \Bobby\Servers\Tcp\Server($tcpServeSocket, $tcpServerConfig, $eventLoop);
@@ -67,7 +78,23 @@ $tcpServerWorkerConfig->setName('Tcp server');
 $tcpServerWorkerConfig->setGroup('root');
 $tcpServerWorkerConfig->setUser('bp');
 
-$serversRunner->addServerWorker($tcpServer, $tcpServerWorkerConfig);
+$tcpServerWorker = $serversRunner->addServerWorker($tcpServer, $tcpServerWorkerConfig);
+
+$tcpServerWorker->on(\Bobby\ServersRunner\ServerWorker::WORKER_START_EVENT, function () {
+    echo "TCP server worker start.\n";
+});
+
+$tcpServerWorker->on(\Bobby\ServersRunner\ServerWorker::WORKER_STOP_EVENT, function () {
+    echo "TCP server worker stop.\n";
+});
+
+$serversRunner->on(\Bobby\ServersRunner\ServersRunner::START_EVENT, function () {
+    echo "Master process start.\n";
+});
+
+$serversRunner->on(\Bobby\ServersRunner\ServersRunner::STOP_EVENT, function () {
+    echo "Master process exit.\n";
+});
 
 $serversRunner->run();
 

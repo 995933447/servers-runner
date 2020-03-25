@@ -60,7 +60,7 @@ class ServerWorker
             if ($isGraceful) {
                 $signalNo = SIGQUIT;
             } else {
-                $signalNo = SIGKILL;
+                $signalNo = SIGINT;
             }
             posix_kill($pid, $signalNo);
         }
@@ -121,6 +121,11 @@ class ServerWorker
             $gracefulQuit();
 
             $this->server->getEventLoop()->addTick(2, $gracefulQuit);
+        });
+
+        $this->server->getEventLoop()->installSignal(SIGINT, function () {
+           $this->emitOnEvent(static::WORKER_STOP_EVENT);
+           Quit::normalQuit();
         });
 
         $this->server->listen();
