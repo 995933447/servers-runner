@@ -1,4 +1,4 @@
-使用"bobby/servers","bobby/multi-processes","bobby/std"组合开发的服务器多进程运行管理包。所有功能模块组件化封装，可以细粒度地控制每个进程的运行配置和行为。\
+使用"bobby/servers","bobby/multi-processes","bobby/std"组合开发的服务器多进程运行管理包。所有功能模块组件化封装，可以细粒度地控制每个进程的运行配置和行为。
 
 运行模式:\
 一个master主进程负责监控多个server worker子进程。当有其中一个server worker进程异常退出时，master主进程会重新拉起一个新的server worker进程。
