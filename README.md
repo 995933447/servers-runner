@@ -108,6 +108,27 @@ $serversRunner->on(\Bobby\ServersRunner\ServersRunner::STOP_EVENT, function () {
 });
 
 $serversRunner->run();
+
+/* 无优化配置下ab压测结果
+ ab -c 1000 -t 60 http://127.0.0.1:9501/
+ Server Software:        
+ Server Hostname:        127.0.0.1
+ Server Port:            9501
+ 
+ Document Path:          /
+ Document Length:        16 bytes
+ 
+ Concurrency Level:      1000
+ Time taken for tests:   3.414 seconds
+ Complete requests:      50000
+ Failed requests:        0
+ Total transferred:      4700000 bytes
+ HTML transferred:       800000 bytes
+ Requests per second:    14645.32 [#/sec] (mean)
+ Time per request:       68.281 [ms] (mean)
+ Time per request:       0.068 [ms] (mean, across all concurrent requests)
+ Transfer rate:          1344.39 [Kbytes/sec] received
+*/
 ```
 
 异步server功能部分由composer包"bobby\servers"提供, 使用详见：https://packagist.org/packages/bobby/servers
