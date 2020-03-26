@@ -109,7 +109,7 @@ $serversRunner->on(\Bobby\ServersRunner\ServersRunner::STOP_EVENT, function () {
 
 $serversRunner->run();
 
-/* 无优化配置下ab压测结果
+/* php7.2无优化配置下ab压测结果
  ab -c 1000 -t 60 http://127.0.0.1:9501/
  Server Software:        
  Server Hostname:        127.0.0.1
