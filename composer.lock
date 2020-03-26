@@ -124,12 +124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/995933447/php-servers.git",
-                "reference": "22ec7c6ef258725825efeb6a1130a5a051ecfc55"
+                "reference": "b58357022dd2f6843b56a1b2d56edf78aa6aff78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/995933447/php-servers/zipball/22ec7c6ef258725825efeb6a1130a5a051ecfc55",
-                "reference": "22ec7c6ef258725825efeb6a1130a5a051ecfc55",
+                "url": "https://api.github.com/repos/995933447/php-servers/zipball/b58357022dd2f6843b56a1b2d56edf78aa6aff78",
+                "reference": "b58357022dd2f6843b56a1b2d56edf78aa6aff78",
                 "shasum": ""
             },
             "require": {
@@ -158,7 +158,7 @@
                 }
             ],
             "description": "原生PHP实现的异步即时网络通信服务组件",
-            "time": "2020-03-23T16:30:55+00:00"
+            "time": "2020-03-26T14:39:44+00:00"
         },
         {
             "name": "bobby/std",
@@ -199,12 +199,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/995933447/php-stream-event-loop.git",
-                "reference": "db3ca8600d1c959014d3a257135c2f5a9fefd696"
+                "reference": "e815eefbe4f4a78348c9756857d03607d9dfa6a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/995933447/php-stream-event-loop/zipball/db3ca8600d1c959014d3a257135c2f5a9fefd696",
-                "reference": "db3ca8600d1c959014d3a257135c2f5a9fefd696",
+                "url": "https://api.github.com/repos/995933447/php-stream-event-loop/zipball/e815eefbe4f4a78348c9756857d03607d9dfa6a2",
+                "reference": "e815eefbe4f4a78348c9756857d03607d9dfa6a2",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +227,7 @@
                 }
             ],
             "description": "stream函数开发的异步非阻塞IO事件循环组件",
-            "time": "2020-03-22T18:30:57+00:00"
+            "time": "2020-03-25T10:22:04+00:00"
         }
     ],
     "packages-dev": [],

@@ -5,9 +5,9 @@ require __DIR__ . "/../vendor/autoload.php";
 $serversRunnerConfig = new \Bobby\ServersRunner\ServersRunnerConfig();
 $serversRunnerConfig->setPidFile('/var/www/servers-runner.pid');
 //$serversRunnerConfig->setDaemonize(true);
-$serversRunnerConfig->setStdinFile('/var/www/stdin.log');
-$serversRunnerConfig->setStdoutFile('/var/www/stdout.log');
-$serversRunnerConfig->setStderrFile('/var/www/stderr.log');
+//$serversRunnerConfig->setStdinFile('/var/www/stdin.log');
+//$serversRunnerConfig->setStdoutFile('/var/www/stdout.log');
+//$serversRunnerConfig->setStderrFile('/var/www/stderr.log');
 $serversRunner = new \Bobby\ServersRunner\ServersRunner($serversRunnerConfig);
 
 $eventLoop = \Bobby\StreamEventLoop\LoopFactory::make();
@@ -23,31 +23,31 @@ $httpServer->on(\Bobby\Servers\Http\Server::REQUEST_EVENT, function (
     var_dump($request->request);
 
     // 异步请求远程服务器
-    $remote = fsockopen($host = 'www.baidu.com', 80);
+//    $remote = fsockopen($host = 'www.baidu.com', 80);
+//
+//    $post = "GET / HTTP/1.1\r\rn";
+//    $post .= "Host: $host\r\n";
+//    $post .= "Connection: close\r\n\r\n";
+//
+//    $server->getEventLoop()->addLoopStream(
+//        \Bobby\StreamEventLoop\LoopContract::WRITE_EVENT,
+//        $remote,
+//        function ($remote, \Bobby\StreamEventLoop\LoopContract $loop) use ($host, &$post) {
+//        if (($written = fwrite($remote, $post)) === strlen($post)) {
+//            sleep(2);
+//            $loop->removeLoopStream(\Bobby\StreamEventLoop\LoopContract::WRITE_EVENT, $remote);
+//            $loop->addLoopStream(\Bobby\StreamEventLoop\LoopContract::READ_EVENT, $remote, function ($remote, \Bobby\StreamEventLoop\LoopContract $loop) {
+//                $data = fread($remote, 1024);
+//                echo $data;
+//                $loop->removeLoopStream(\Bobby\StreamEventLoop\LoopContract::READ_EVENT, $remote);
+//            });
+//        } else {
+//            $post = substr($post, 0, $written);
+//        }
+//
+//    });
 
-    $post = "GET / HTTP/1.1\r\n";
-    $post .= "Host: $host\r\n";
-    $post .= "Connection: close\r\n\r\n";
-
-    $server->getEventLoop()->addLoopStream(
-        \Bobby\StreamEventLoop\LoopContract::WRITE_EVENT,
-        $remote,
-        function ($remote, \Bobby\StreamEventLoop\LoopContract $loop) use ($host, &$post) {
-        if (($written = fwrite($remote, $post)) === strlen($post)) {
-            sleep(2);
-            $loop->removeLoopStream(\Bobby\StreamEventLoop\LoopContract::WRITE_EVENT, $remote);
-            $loop->addLoopStream(\Bobby\StreamEventLoop\LoopContract::READ_EVENT, $remote, function ($remote, \Bobby\StreamEventLoop\LoopContract $loop) {
-                $data = fread($remote, 1024);
-                echo $data;
-                $loop->removeLoopStream(\Bobby\StreamEventLoop\LoopContract::READ_EVENT, $remote);
-            });
-        } else {
-            $post = substr($post, 0, $written);
-        }
-
-    });
-
-    $response->end("Hi Http client.\n");
+    $response->header('Content-Type', 'text/html;charset=utf-8')->end("Hi Http client.\n");
 });
 
 $httpServerWorkerConfig = new \Bobby\ServersRunner\ServerWorkerConfig();

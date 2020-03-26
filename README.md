@@ -32,7 +32,7 @@ $httpServer->on(\Bobby\Servers\Http\Server::REQUEST_EVENT, function (
     \Bobby\Servers\Http\Server $server, \Bobby\ServerNetworkProtocol\Http\Request $request, \Bobby\Servers\Http\Response $response
 ) {
     var_dump($request->request);
-    $response->end("Hi Http client.\n");
+    $response->header('Connection', 'keep-alive')->header('Content-Type', 'text/html;charset=utf-8')->end("Hi Http client.\n");
 });
 
 $httpServerWorkerConfig = new \Bobby\ServersRunner\ServerWorkerConfig();
