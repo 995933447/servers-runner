@@ -1,6 +1,6 @@
 {
     "name": "bobby/servers-runner",
-    "description": "PHP server多进程管理方案",
+    "description": "纯PHP开发的PHP socket 多进程服务和管理组件。PHP socket multiprocess service and management component developed in pure PHP.",
     "type": "library",
     "license": "MIT",
     "authors": [
