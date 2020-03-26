@@ -1,4 +1,5 @@
-使用composer包"bobby/servers","bobby/multi-processes","bobby/std"组合开发的服务器多进程运行管理包。所有功能模块组件化封装，可以细粒度地控制每个进程的运行配置和行为且接口简单易懂。
+使用composer包"bobby/servers","bobby/multi-processes","bobby/std"组合开发的服务器多进程运行管理包。
+所有功能模块组件化封装，可以细粒度地控制每个进程的运行配置行为，接口简单易懂，组件之间松耦合可以抽离单独使用各个组件提供的功能。
 
 运行模式:\
 一个master主进程负责监控多个server worker子进程。当有server worker进程异常退出时，master主进程会自动重新拉起新的server worker进程。
@@ -108,3 +109,5 @@ $serversRunner->on(\Bobby\ServersRunner\ServersRunner::STOP_EVENT, function () {
 
 $serversRunner->run();
 ```
+
+server功能部分由composer包"bobby\servers"提供, 使用详见：https://packagist.org/packages/bobby/servers
