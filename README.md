@@ -111,4 +111,4 @@ $serversRunner->run();
 ```
 
 异步server功能部分由composer包"bobby\servers"提供, 使用详见：https://packagist.org/packages/bobby/servers
-"bobby/multi-processes"包提供多进程使用功能，使用详见:https://packagist.org/packages/bobby/multi-processes
+"bobby/multi-processes"包提供多进程使用功能，使用详见: https://packagist.org/packages/bobby/multi-processes
