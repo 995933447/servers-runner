@@ -1,8 +1,8 @@
-使用composer包"bobby/servers","bobby/multi-processes","bobby/std"组合开发的服务器多进程运行管理包。
+使用composer包"bobby/servers","bobby/multi-processes","bobby/std"组合开发的异步服务器多进程运行管理包。
 所有功能模块组件化封装，可以细粒度地控制每个进程的运行配置行为，接口简单易懂，组件之间松耦合可以抽离单独使用各个组件提供的功能。
 
 运行模式:\
-一个master主进程负责监控多个server worker子进程。当有server worker进程异常退出时，master主进程会自动重新拉起新的server worker进程。
+一个master主进程负责监控多个server worker子进程，server worker子进程为工作进程，提供server服务能力。当有server worker进程异常退出时，master主进程会自动重新拉起新的server worker进程。
 master主进程注册了4个信号用于特殊控制server worker进程。分别是SIGINT, SIGTEM用于退出所有server worker进程并自己退出。
 SIGQUIT用于平滑退出(处理完正在进行的请求后退出)server worker进程并自己退出。SIGUSR1用于重启所有server worker进程。
 SIGUSR2用于平滑重启(处理完正在进行的请求后重启)所有server worker进程。
@@ -110,4 +110,4 @@ $serversRunner->on(\Bobby\ServersRunner\ServersRunner::STOP_EVENT, function () {
 $serversRunner->run();
 ```
 
-server功能部分由composer包"bobby\servers"提供, 使用详见：https://packagist.org/packages/bobby/servers
+异步server功能部分由composer包"bobby\servers"提供, 使用详见：https://packagist.org/packages/bobby/servers
